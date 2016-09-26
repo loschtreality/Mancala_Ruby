@@ -60,11 +60,11 @@ class Board
   end
 
   def render
-    # print "      #{@cups[7..12].reverse.map { |cup| cup.count }}      \n"
-    # puts "#{@cups[13].count} -------------------------- #{@cups[6].count}"
-    # print "      #{@cups.take(6).map { |cup| cup.count }}      \n"
-    # puts ""
-    # puts ""
+    print "      #{@cups[7..12].reverse.map { |cup| cup.count }}      \n"
+    puts "#{@cups[13].count} -------------------------- #{@cups[6].count}"
+    print "      #{@cups.take(6).map { |cup| cup.count }}      \n"
+    puts ""
+    puts ""
   end
 
   def cups_empty?
