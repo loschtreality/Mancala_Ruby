@@ -28,17 +28,21 @@ class Board
   end
 
   def make_move(start_pos, current_player_name)
-    stones = @cups[start_pos].dup
+    stones = @cups[start_pos]
     @cups[start_pos] = []
-    index = start_pos + 1
+    index = start_pos
     until stones.empty?
+      index += 1
+      index = 0 if index > 13
 
-    index += 1 if (current_player_name == @name1 && index == 13) || (current_player_name == @name2 && index == 6)
+      if index == 6
+        @cups[6] << stones.pop if current_player_name == @name1
+      elsif index == 13
+        @cups[13] << stones.pop if current_player_name == @name2
+      else
+        @cups[index] << stones.pop
+      end
 
-    index -= 14 if index > 13
-
-      @cups[index] << stones.pop
-      index += 1 unless stones.empty?
     end
     render
     next_turn(index)
@@ -46,11 +50,10 @@ class Board
 
   def next_turn(ending_cup_idx)
     # helper method to determine what #make_move returns
-    debugger
-    if @cups[ending_cup_idx].empty?
+    if (ending_cup_idx == 13) || (ending_cup_idx == 6)
+    :prompt
+    elsif @cups[ending_cup_idx].count == 1
       :switch
-    elsif (ending_cup_idx == 13) || (ending_cup_idx == 6)
-      :prompt
     else
     ending_cup_idx
     end
@@ -65,14 +68,17 @@ class Board
   end
 
   def cups_empty?
-    is_empty = true
-    (0..5).each do |i|
-      is_empty = false unless @cups[i].empty?
+    side1 = false
+    side2 = false
+    @cups[0...6].each do |el|
+      side1 = true if el.empty?
     end
-    (7..12).each do |j|
-      is_empty = false unless @cups[j].empty?
+
+    @cups[7...13].each do |el|
+      side2 = true if el.empty?
     end
-    is_empty
+
+    side1 || side2
   end
 
   def winner
